@@ -1,0 +1,9 @@
+admin:
+  name: admin
+  password_digest: <%= BCrypt::Password.create "admin" %>
+  admin: true
+
+regular:
+  name: regular
+  password_digest: <%= BCrypt::Password.create "password" %>
+  admin: false

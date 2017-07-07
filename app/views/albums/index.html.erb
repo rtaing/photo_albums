@@ -1,0 +1,26 @@
+<div class="row row-padding">
+  <% @albums.each do |album| %>
+    <div class="col-xs-6 col-sm-4 col-md-2 col-padding text-center">
+      <%= link_to album_photos_path(album), class: 'album', data: { position: album.position } do %>
+        <% if album.cover_photo_url.present? %>
+          <%= image_tag album.cover_photo_url, class: 'img img-responsive center-block img-gallery' %>
+        <% else %>
+          <%= album.name %>
+        <% end %>
+      <% end %>
+      <span>
+        <%= link_to album.name, album_photos_path(album) %>
+        <% if current_user.admin %> | 
+          <%= link_to 'Edit', edit_album_path(album), id: "album_edit_#{album.id}" %> | 
+          <%= link_to 'Destroy', album, method: :delete, id: "album_delete_#{album.id}", data: { confirm: 'Are you sure?' } %>
+        <% end %>
+      </span>
+    </div>
+  <% end %>
+</div>
+<br>
+<div class="row">
+  <div class="col-padding">
+    <%= link_to 'New Album', new_album_path, class: 'btn btn-info' if current_user.admin %>
+  </div>
+</div>

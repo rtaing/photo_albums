@@ -1,0 +1,27 @@
+<%= form_for album, html: {class: 'form'} do |f| %>
+  <% if album.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(album.errors.count, "error") %> prohibited this album from being saved:</h2>
+
+      <ul>
+      <% album.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field form-group">
+    <%= f.label :name %>
+    <%= f.text_field :name %>
+  </div>
+
+  <div class="field form-group">
+    <%= f.label :position %>
+    <%= f.text_field :position %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit class: 'btn btn-info' %>
+  </div>
+<% end %>

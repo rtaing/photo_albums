@@ -1,0 +1,67 @@
+<div class="row">
+  <div id="sortableList" class="list-group">
+  <% @photos.in_groups_of(12, false).each do |photo_group| %>
+    <% photo_group.each do |photo| %>
+      <div class="col-xs-3 col-sm-2 col-md-1 col-padding row-padding" data-id="<%= photo.id %>">
+        <%= link_to photo.picture.url(:web), class: 'gallery', title: photo.description.to_s, full: download_photo_path(photo), id: "photo_link_#{photo.id}" do %>
+          <%= image_tag photo.picture.url(:thumb), class: 'img-responsive img-gallery', data: { position: photo.position }  %>
+        <% end %>
+        <% if current_user.admin %>
+          <% if @album.cover_photo == photo %>
+            <span class="glyphicon glyphicon-star"></span>
+          <% else %>
+            <%= link_to '<span class="glyphicon glyphicon-star-empty"></span>'.html_safe, update_cover_photo_album_path(@album), class: 'cover_photo_link', remote: true, method: :patch, data: { params: {photo_id: photo.id}.to_param } %>
+          <% end %>
+          <%= link_to '<span class="glyphicon glyphicon-pencil"></span>'.html_safe, edit_photo_path(photo), id: "photo_edit_#{photo.id}" %>
+          <%= link_to '<span class="glyphicon glyphicon-trash"></span>'.html_safe, photo, method: :delete, id: "photo_delete_#{photo.id}", data: { confirm: 'Are you sure?' } %>
+        <% end %>
+      </div>
+    <% end %>
+  <% end %>
+  </div>
+</div>
+
+<% if current_user.admin %>
+  <div class="row">
+    <div class="col-padding">
+      <%= link_to 'New', new_photos_album_path(@album), class: 'btn btn-default' %>
+    </div>
+  </div>
+<% end %>
+
+<script>
+  $(document).ready(function() {
+    $('.gallery').magnificPopup({ 
+      type: 'image',
+      gallery:{
+        enabled:true,
+        navigateByImgClick: true,
+        preload: [0,1]
+      },
+      image: {
+        titleSrc: function(item) {
+          return item.el.attr('title') + ' <small><a href="'+item.el.attr('full')+'">Download full size</a></small>';
+        }
+      }
+    });
+    
+    <% if current_user.admin %>
+      sortableList = document.getElementById('sortableList');      
+      Sortable.create(sortableList, {
+        onUpdate: function(evt){
+          $.post('<%= album_update_photo_position_path(@album) %>', {photo_id: evt.item.dataset.id, new_index: evt.newIndex}).fail(function(){
+            alert('Error updating photo position');
+          });
+        }
+      });
+      
+      $('.cover_photo_link').on('ajax:success', function(){
+        // Change star indicator for cover photo
+        $('.glyphicon-star').removeClass('glyphicon-star').addClass('glyphicon-star-empty');
+        $(this).find("span").removeClass('glyphicon-star-empty').addClass('glyphicon-star');
+      }).on('ajax:error', function(){
+        alert('Error assigning cover photo');
+      });
+    <% end %>
+  });
+</script>

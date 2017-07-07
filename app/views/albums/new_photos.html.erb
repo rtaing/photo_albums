@@ -1,0 +1,8 @@
+<%= form_tag create_photos_album_path(@album), multipart: true, html: {class: 'form'} do %>
+  <div class="field form-group">
+    <%= label_tag 'Pictures' %> <%= file_field_tag "pictures[]", multiple: true %>
+  </div>
+  <div class="actions">
+    <%= submit_tag 'Upload', data: { disable_with: 'Please wait...' }, class: 'btn btn-info' %>
+  </div>
+<% end %>

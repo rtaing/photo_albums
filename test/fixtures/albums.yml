@@ -1,0 +1,12 @@
+album_with_no_photos:
+  name: No Photos
+  position: 1
+  
+album_with_multiple_photos:
+  name: Multiple Photos
+  cover_photo: second_photo_in_multiple_photos_album
+  position: 2
+
+album_with_one_photo:
+  name: Only One Photo
+  position: 3

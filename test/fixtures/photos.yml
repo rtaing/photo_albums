@@ -1,0 +1,14 @@
+first_photo_in_multiple_photos_album:
+  description: Picture One
+  position: 1
+  album: album_with_multiple_photos
+
+photo_in_single_photo_album:
+  description: Solo Picture
+  position: 2
+  album: album_with_one_photo
+
+second_photo_in_multiple_photos_album:
+  description: Second one in album with multiple photos
+  position: 3
+  album: album_with_multiple_photos
